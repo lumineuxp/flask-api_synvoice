@@ -32,11 +32,12 @@ def synthesize(embed, text ):
     generated_wav = np.pad(generated_wav, (0, synthesizer.sample_rate), mode="constant")
     return generated_wav
 
-def get_embed(encode64):
+def get_embed(voice_encode64):
     gen_file_name = generate_file_name_from_time()
     file_name = "{}.wav".format(gen_file_name)
     
-    voice = base64.b64decode(encode64)
+    #convert voice encode to voice file 
+    voice = base64.b64decode(voice_encode64)
     with open(file_name, "wb") as wav_file:
         wav_file.write(voice)   
     
