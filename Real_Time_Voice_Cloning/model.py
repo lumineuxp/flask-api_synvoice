@@ -13,6 +13,8 @@ from vocoder import inference as vocoder
 import base64
 import soundfile as sf
 
+import asyncio
+
 encoder.load_model("./Real_Time_Voice_Cloning/saved_models/default/encoder.pt")
 synthesizer = Synthesizer("./Real_Time_Voice_Cloning/saved_models/default/synthesizer.pt")
 vocoder.load_model("./Real_Time_Voice_Cloning/saved_models/default/vocoder.pt")
@@ -68,9 +70,10 @@ def get_syn_voice(embed64,text):
     return encode_string
 
 def get_ex_syn(embed64):
-    text = "A MONKEY perched upon a lofty tree saw some Fishermen casting their nets into a river, and narrowly watched their proceedings.The Fishermen after a while gave up fishing, and on going home to dinner left their nets upon the bank."
+    text = "A MONKEY perched upon a lofty tree saw some Fishermen casting their nets into a river, and narrowly watched their proceedings."
     
     encode_syn_voice = get_syn_voice(embed64, text)
+    
 
     return encode_syn_voice
 
