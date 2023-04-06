@@ -68,7 +68,8 @@ def get_synthesize_tale():
             'syn_voice': syn_texts
         }  
     json_data = json.dumps(jsonstr)
-    return json_data
+    compressed_data = gzip.compress(jsonify(jsonstr).data)
+    return Response(compressed_data, mimetype='application/json', headers={'Content-Encoding': 'gzip'})
 
 @app.route('/get_tales')
 def get_tales():
