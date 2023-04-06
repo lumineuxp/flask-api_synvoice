@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, Response, request , jsonify 
 import sys
 project_name = "./Real_Time_Voice_Cloning"
 sys.path.append(project_name)
@@ -7,6 +7,11 @@ import Real_Time_Voice_Cloning.model as model
 import base64
 import json
 from connect import db,Tales
+import logging
+
+import gzip
+# configure logging
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://lumineuxp:hgnuPHIJS9O7@ep-raspy-hall-234246.ap-southeast-1.aws.neon.tech/syn_voice_app"
@@ -29,9 +34,13 @@ def get_embed():
         'ex_synthesize_voice' : syn_tostr
         
     } 
-   
-    json_data = json.dumps(jsonstr)
-    return json_data
+    
+    # json_data = json.dumps(jsonstr)   ,ex_synthesize_voice=syn_tostr
+    compressed_data = gzip.compress(jsonify(jsonstr).data)
+    
+    #  jsonify(embed=embed64_tostr,ex_synthesize_voice=syn_tostr)
+    return Response(compressed_data, mimetype='application/json', headers={'Content-Encoding': 'gzip'})
+    # return jsonify(embed=embed64_tostr,ex_synthesize_voice=syn_tostr)
     
 @app.route('/api-synthesize-tale', methods=['POST'])
 def get_synthesize_tale():
