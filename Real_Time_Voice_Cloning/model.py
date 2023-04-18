@@ -54,14 +54,14 @@ def get_embed(voice_encode64):
 
 def get_syn_voice(embed64,text): 
     gen_file_name = generate_file_name_from_time()
-    file_name = "syn{}.wav".format(gen_file_name)
+    file_name = "syn{}.mp3".format(gen_file_name)
     
     embed_decode = base64.b64decode(embed64) #decode embed64 
     embed = np.frombuffer(embed_decode, dtype=np.float32) #convert embbed_decode to numpy form.
     
     synthesized_voice = synthesize(embed, text)
     #save audio
-    sf.write(file_name, synthesized_voice, synthesizer.sample_rate)  
+    sf.write(file_name, synthesized_voice, synthesizer.sample_rate,format='MP3')  
     #convert synthesized voice to base64
     with open(file_name, "rb") as file: 
         encode_string = base64.b64encode(file.read())
